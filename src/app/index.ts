@@ -2,21 +2,23 @@ import express from "express";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import bodyParser from "body-parser";
+import { Users } from "./users";
+import cors from "cors";
 
 export async function startApolloServer() {
   const app = express();
   app.use(bodyParser.json());
+  app.use(cors());
   const server = new ApolloServer({
-    typeDefs: `
+    typeDefs: /*graphql */ `
+        ${Users.types}
         type Query {
-            hello: String
-            helloToMe(name: String!): String
+            ${Users.queries}
         }
   `,
     resolvers: {
       Query: {
-        hello: () => "Hello, Tiku!",
-        helloToMe: (parent: any, { name }: {name:String}) => `Hello, ${name}!`,
+        ...Users.resolvers.queries,
       },
     },
   });
