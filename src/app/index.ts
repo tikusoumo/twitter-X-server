@@ -2,10 +2,11 @@ import express from "express";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import bodyParser from "body-parser";
-import { Users } from "./users";
+import { User } from "./users";
 import cors from "cors";
 import { GraphqlContext } from "../interfaces";
 import JWTservices from "../services/jwt";
+import { Tweet } from "./tweet";
 
 export async function startApolloServer() {
   const app = express();
@@ -13,15 +14,27 @@ export async function startApolloServer() {
   app.use(cors());
   const server = new ApolloServer<GraphqlContext>({
     typeDefs: /*graphql */ `
-        ${Users.types}
+        ${User.types}
+        ${Tweet.types}
         type Query {
-            ${Users.queries}
+            ${User.queries}
+            ${Tweet.queries}
+        }
+        type Mutation {
+            ${Tweet.mutations}
         }
   `,
     resolvers: {
       Query: {
-        ...Users.resolvers.queries,
+        ...User.resolvers.queries,
+        ...Tweet.resolvers.queries
+        
       },
+      Mutation: {
+        ...Tweet.resolvers.mutations,
+      },
+      ...Tweet.resolvers.extraResolvers,
+      ...User.resolvers.extraResolvers,
     },
   });
   await server.start();

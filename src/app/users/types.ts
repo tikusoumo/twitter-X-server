@@ -1,5 +1,5 @@
 export const types = /*graphql*/ `
-type User {
+type User{
     id: ID!
     firstName: String!
     lastName: String
@@ -7,5 +7,6 @@ type User {
     profileImageUrl: String
     createdAt: String!
     updatedAt: String!
+    tweets: [Tweet]
 }
     `
