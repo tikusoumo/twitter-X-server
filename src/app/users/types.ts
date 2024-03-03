@@ -7,6 +7,8 @@ type User{
     profileImageUrl: String
     createdAt: String!
     updatedAt: String!
+    followers: [User]
+    following: [User]
     tweets: [Tweet]
 }
     `

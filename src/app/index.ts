@@ -22,6 +22,7 @@ export async function startApolloServer() {
         }
         type Mutation {
             ${Tweet.mutations}
+            ${User.mutations}
         }
   `,
     resolvers: {
@@ -32,6 +33,7 @@ export async function startApolloServer() {
       },
       Mutation: {
         ...Tweet.resolvers.mutations,
+        ...User.resolvers.mutations
       },
       ...Tweet.resolvers.extraResolvers,
       ...User.resolvers.extraResolvers,
