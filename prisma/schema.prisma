@@ -24,6 +24,13 @@ model User {
   tweets Tweet[]
 }
 
+// model Likes{
+//   like  User   @relation(fields: [likeId], references: [id])
+//   likeId String
+
+  
+// }
+
 model Follows {
   follower   User   @relation("follower", fields: [followerId], references: [id])
   followerId String
@@ -39,6 +46,7 @@ model Tweet {
   content   String
   imageUrl  String?
   author    User     @relation(fields: [authorId], references: [id])
+
   authorId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

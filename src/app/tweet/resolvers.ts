@@ -62,6 +62,19 @@ export const mutations = {
     });
     return tweet;
   },
+  deleteTweet: async (
+    parent: any,
+    { id }: { id: string },
+    context: GraphqlContext
+  ) => {
+    if (!context.user) throw new Error("Unauthorized");
+    const tweet = await prismaClient.tweet.findUnique({ where: { id } });
+    if (!tweet) throw new Error("Tweet not found");
+    if (tweet.authorId !== context.user.id)
+      throw new Error("Unauthorized to delete this tweet");
+    await prismaClient.tweet.delete({ where: { id } });
+    return true;
+  },
 };
 const extraResolvers = {
   Tweet: {
